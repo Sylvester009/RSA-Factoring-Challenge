@@ -35,7 +35,7 @@ def main():
         for line in file:
             num = int(line.strip())
             result = subprocess.run(["factor", str(num)], capture_output=True, text=True)
-            factors = list(map(int, result.stdout.split()))
+            factors = [int(x.rstrip(':')) for x in result.stdout.split()]
             check_factor(factors)
 
 if __name__ == "__main__":

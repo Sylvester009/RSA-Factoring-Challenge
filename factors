@@ -1,49 +1,34 @@
-#!/usr/bin/env bash
-# A factors challenge
+#!/usr/bin/env python3
 
-factorise()
-{
-	if [ $# -ne 3 ];
-        then
-                args=("$@")
-                count=0
-                product=1
-                for a in ${args[*]};
-                do
-                        if [ $count -gt 1 ];
-                        then
-                                product=$(echo $a*$product | bc)
-                        fi
-                        count=$((count + 1))
-                done
-        else
-                product=$3
-        fi
+import sys
+import subprocess
+import re
 
-        factor1=$2
-        factor2=$(echo "$1" | tr ':' '=')
+def check_factor(result):
+    factors = re.findall(r'\d+', result)
+    
+    if len(factors) >= 3:
+        num = factors[0]
+        factor1 = factors[1]
+        factor2 = factors[2]
 
-        result=$(echo "if($product > $factor1) 1 else 0" | bc)
-	        if ((result == 1)); then
-		        factor2cp=$factor1
-		        factor1=$product
-		        product=$factor2cp
-                fi
+        if factor2 > factor1:
+            factor1, factor2 = factor2, factor1
 
-        echo "$factor2$factor1*$product"
-}
+        print(f"{num}={factor1}*{factor2}")
 
-if [ $# -ne 1 ]
-then
-        echo 'Usage: factors <file>'
-        exit 1
-else
+def main():
+    if len(sys.argv) != 2:
+        print('Usage: factors <file>')
+        sys.exit(1)
 
-        while read i
-        do
+    input_file = sys.argv[1]
 
-                result=$(factor "$i")
-                factorise $result
+    with open(input_file, 'r') as file:
+        for line in file:
+            num = int(line.strip())
+            result = subprocess.run(["factor", str(num)], capture_output=True, text=True)
+            check_factor(result.stdout)
 
-        done < "$1"
-fi
+if __name__ == "__main__":
+    main()

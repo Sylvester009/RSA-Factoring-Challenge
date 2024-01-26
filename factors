@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 
 import sys
-import math
+import subprocess
 
-def factorize(num):
-    for i in range(2, int(math.sqrt(num)) + 1):
-        if num % i == 0:
-            return (i, num // i)
-    return None
+def check_factor(result):
+    args = result.split()
+    num1 = int(args[1])
+    num2 = int(args[2])
+
+    if num2 > num1:
+        num1, num2 = num2, num1
+
+    print(f"{args[0]}={num1}*{num2}")
 
 def main():
     if len(sys.argv) != 2:
+        print('Usage: factors <file>')
         sys.exit(1)
 
     input_file = sys.argv[1]
@@ -18,11 +23,8 @@ def main():
     with open(input_file, 'r') as file:
         for line in file:
             num = int(line.strip())
-            factors = factorize(num)
-
-            if factors:
-                p, q = factors
-                print(f"{num}={p}*{q}")
+            result = subprocess.run(["factor", str(num)], capture_output=True, text=True)
+            check_factor(result.stdout)
 
 if __name__ == "__main__":
     main()

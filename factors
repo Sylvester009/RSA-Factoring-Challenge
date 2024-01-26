@@ -7,22 +7,22 @@ def factorize(num):
     for i in range(2, int(math.sqrt(num)) + 1):
         if num % i == 0:
             return (i, num // i)
-    return (None)
+    return None
 
 def main():
     if len(sys.argv) != 2:
         sys.exit(1)
 
-    input = sys.argv[1]
+    in_file = sys.argv[1]
 
-    with open(input, 'r') as file:
+    with open(input_file, 'r') as file:
         for line in file:
             num = int(line.strip())
             factors = factorize(num)
 
             if factors:
                 p, q = factors
-                print(f"{number}={p}*{q}")
+                print(f"{num}={p}*{q}")
 
 if __name__ == "__main__":
     main()

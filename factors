@@ -13,7 +13,7 @@ def main():
     if len(sys.argv) != 2:
         sys.exit(1)
 
-    in_file = sys.argv[1]
+    input_file = sys.argv[1]
 
     with open(input_file, 'r') as file:
         for line in file:

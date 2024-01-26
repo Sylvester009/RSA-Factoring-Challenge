@@ -4,14 +4,14 @@ import sys
 import subprocess
 
 def check_factor(result):
-    args = result.split()
-    num1 = int(args[1])
-    num2 = int(args[2])
+    factors = result.split()
+    num1 = int(factors[1])
+    num2 = int(factors[2])
 
     if num2 > num1:
         num1, num2 = num2, num1
 
-    print(f"{args[0]}={num1}*{num2}")
+    print(f"{factors[0]}={num1}*{num2}")
 
 def main():
     if len(sys.argv) != 2:

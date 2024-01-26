@@ -28,7 +28,8 @@ def main():
         for line in file:
             num = int(line.strip())
             result = subprocess.run(["factor", str(num)], capture_output=True, text=True)
-            print_factorization(result.stdout)
+            factors = re.findall(r'\d+', result.stdout)
+            print(f"{num}={factors[1]}*{factors[2]}")
 
 if __name__ == "__main__":
     main()

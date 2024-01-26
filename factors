@@ -2,16 +2,20 @@
 
 import sys
 import subprocess
+import re
 
-def check_factor(result):
-    factors = result.split()
-    num1 = int(factors[1])
-    num2 = int(factors[2])
+def print_factorization(result):
+    factors = re.findall(r'\d+', result)
+    
+    if len(factors) >= 3:
+        num = factors[0]
+        factor1 = factors[1]
+        factor2 = factors[2]
 
-    if num2 > num1:
-        num1, num2 = num2, num1
+        if factor2 > factor1:
+            factor1, factor2 = factor2, factor1
 
-    print(f"{factors[0]}={num1}*{num2}")
+        print(f"{num}={factor1}*{factor2}")
 
 def main():
     if len(sys.argv) != 2:
@@ -24,7 +28,7 @@ def main():
         for line in file:
             num = int(line.strip())
             result = subprocess.run(["factor", str(num)], capture_output=True, text=True)
-            check_factor(result.stdout)
+            print_factorization(result.stdout)
 
 if __name__ == "__main__":
     main()
